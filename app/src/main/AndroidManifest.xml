@@ -51,6 +51,12 @@
         <activity android:name=".RecipeDetailActivity"
             android:exported="true"/>
 
+        <activity android:name=".AboutActivity"
+            android:exported="true"/>
+
+        <activity android:name=".IngredientsActivity"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

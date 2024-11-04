@@ -53,6 +53,12 @@ public class MainActivity extends AppCompatActivity {
 
         Button openGalleryButton = findViewById(R.id.open_gallery_button);
         Button openCameraButton = findViewById(R.id.open_camera_button);
+        Button about_button = findViewById(R.id.about_button);
+
+        about_button.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(intent);
+        });
 
         // Initialize gallery launcher
         galleryLauncher = registerForActivityResult(
@@ -203,8 +209,8 @@ public class MainActivity extends AppCompatActivity {
                         responseMessage = response.body() != null ? response.body().string() : "Upload successful!";
                         // Passing the response message to another activity
                         runOnUiThread(() -> {
-                            Intent intent = new Intent(MainActivity.this, AvailableRecipesActivity.class);
-                            intent.putExtra("response_message", responseMessage);
+                            Intent intent = new Intent(MainActivity.this, IngredientsActivity.class);
+                            intent.putExtra("response message", responseMessage);
                             startActivity(intent);
                         });
                     } else {
