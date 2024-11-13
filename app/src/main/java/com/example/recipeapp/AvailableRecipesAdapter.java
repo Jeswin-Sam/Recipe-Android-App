@@ -58,7 +58,7 @@ public class AvailableRecipesAdapter extends RecyclerView.Adapter<AvailableRecip
                 String ingredientsString = "";
 
                 for (String ingredient : ingredients){
-                    ingredientsString = ingredientsString + "· " + ingredient + "\n";
+                    ingredientsString = ingredientsString + "● " + ingredient.substring(0, 1).toUpperCase() + ingredient.substring(1) + "\n";
                 }
 
                 Intent intent = new Intent(context, RecipeDetailActivity.class);
