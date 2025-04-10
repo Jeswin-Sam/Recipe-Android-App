@@ -37,7 +37,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     private ActivityResultLauncher<Intent> galleryLauncher;
     private ActivityResultLauncher<Intent> cameraLauncher;
@@ -46,17 +46,19 @@ public class MainActivity extends AppCompatActivity {
     private Uri photoUri;
     private OkHttpClient client = new OkHttpClient();
 
+    public static String serverURL = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
 
         Button openGalleryButton = findViewById(R.id.open_gallery_button);
         Button openCameraButton = findViewById(R.id.open_camera_button);
         Button about_button = findViewById(R.id.about_button);
 
         about_button.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+            Intent intent = new Intent(HomeActivity.this, AboutActivity.class);
             startActivity(intent);
         });
 
@@ -114,18 +116,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void requestGalleryPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // Android 13+
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
-                openGallery();
-            } else {
-                permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES);
-            }
-        } else { // Android 12 and below
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                openGallery();
-            } else {
-                permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
-            }
+        // Android 13+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
+            openGallery();
+        } else {
+            permissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES);
         }
     }
 
@@ -188,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Create the request
             Request request = new Request.Builder()
-                    .url("http://192.168.1.7:8080/")
+                    .url(serverURL)
                     .post(requestBody)
                     .build();
 
@@ -197,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Call call, @NonNull IOException e) {
                     runOnUiThread(() ->
-                            Toast.makeText(MainActivity.this, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(HomeActivity.this, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                     );
                 }
 
@@ -209,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                         responseMessage = response.body() != null ? response.body().string() : "Upload successful!";
                         // Passing the response message to another activity
                         runOnUiThread(() -> {
-                            Intent intent = new Intent(MainActivity.this, IngredientsActivity.class);
+                            Intent intent = new Intent(HomeActivity.this, IngredientsActivity.class);
                             intent.putExtra("response message", responseMessage);
                             startActivity(intent);
                         });
