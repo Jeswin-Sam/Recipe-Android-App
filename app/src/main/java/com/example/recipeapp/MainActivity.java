@@ -1,7 +1,6 @@
 package com.example.recipeapp;
 
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -37,7 +36,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class HomeActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private ActivityResultLauncher<Intent> galleryLauncher;
     private ActivityResultLauncher<Intent> cameraLauncher;
@@ -46,19 +45,19 @@ public class HomeActivity extends AppCompatActivity {
     private Uri photoUri;
     private OkHttpClient client = new OkHttpClient();
 
-    public static String serverURL = "";
+    public static String serverURL = "https://nominally-neat-starling.ngrok-free.app/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
 
         Button openGalleryButton = findViewById(R.id.open_gallery_button);
         Button openCameraButton = findViewById(R.id.open_camera_button);
         Button about_button = findViewById(R.id.about_button);
 
         about_button.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, AboutActivity.class);
+            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(intent);
         });
 
@@ -192,7 +191,7 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Call call, @NonNull IOException e) {
                     runOnUiThread(() ->
-                            Toast.makeText(HomeActivity.this, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(MainActivity.this, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                     );
                 }
 
@@ -204,7 +203,7 @@ public class HomeActivity extends AppCompatActivity {
                         responseMessage = response.body() != null ? response.body().string() : "Upload successful!";
                         // Passing the response message to another activity
                         runOnUiThread(() -> {
-                            Intent intent = new Intent(HomeActivity.this, IngredientsActivity.class);
+                            Intent intent = new Intent(MainActivity.this, IngredientsActivity.class);
                             intent.putExtra("response message", responseMessage);
                             startActivity(intent);
                         });

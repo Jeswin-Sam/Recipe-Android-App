@@ -49,8 +49,13 @@ public class IngredientsActivity extends AppCompatActivity {
         ArrayList<String> itemList = parseIdentifiedIngredients(responseMessage);
 
         StringBuilder identifiedIngredients = new StringBuilder();
-        for(String item : itemList)
-            identifiedIngredients.append("● " + item.substring(0, 1).toUpperCase() + item.substring(1) + "\n");
+
+        if (itemList.isEmpty())
+            identifiedIngredients.append("No ingredients identified!");
+        else
+            for(String item : itemList)
+                if (!item.isEmpty())
+                    identifiedIngredients.append("● " + item.substring(0, 1).toUpperCase() + item.substring(1) + "\n");
 
         ingredients_text.setText(identifiedIngredients);
 
